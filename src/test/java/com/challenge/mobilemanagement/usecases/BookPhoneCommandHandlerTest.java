@@ -3,6 +3,8 @@ package com.challenge.mobilemanagement.usecases;
 
 import com.challenge.mobilemanagement.domain.*;
 import com.challenge.mobilemanagement.helper.TestPhoneEventBuilder;
+import com.challenge.mobilemanagement.usecases.bookPhone.BookPhoneCommand;
+import com.challenge.mobilemanagement.usecases.bookPhone.BookPhoneCommandHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -15,6 +17,8 @@ import static org.mockito.Mockito.*;
 
 public class BookPhoneCommandHandlerTest {
 
+    public static final String PHONE_IS_ALREADY_BOOKED = "Phone is already booked";
+    public static final String PHONE_HAS_JUST_BEEN_BOOKED = "Phone has just been booked";
     private PhoneEventsStream phoneEventsStream;
     private BookPhoneCommandHandler bookPhoneCommandHandler;
 
@@ -31,7 +35,7 @@ public class BookPhoneCommandHandlerTest {
 
         BookPhoneCommand bookPhoneCommand = buildBookPhoneCommand();
 
-        StepVerifier.create(bookPhoneCommandHandler.book(bookPhoneCommand))
+        StepVerifier.create(bookPhoneCommandHandler.handle(bookPhoneCommand))
                 .expectNextMatches(Result::isSuccessful)
                 .verifyComplete();
 
@@ -47,7 +51,7 @@ public class BookPhoneCommandHandlerTest {
 
         BookPhoneCommand bookPhoneCommand = buildBookPhoneCommand();
 
-        StepVerifier.create(bookPhoneCommandHandler.book(bookPhoneCommand))
+        StepVerifier.create(bookPhoneCommandHandler.handle(bookPhoneCommand))
                 .expectNextMatches(Result::isSuccessful)
                 .verifyComplete();
 
@@ -62,8 +66,8 @@ public class BookPhoneCommandHandlerTest {
 
         BookPhoneCommand bookPhoneCommand = buildBookPhoneCommand("User 2");
 
-        StepVerifier.create(bookPhoneCommandHandler.book(bookPhoneCommand))
-                .expectNextMatches(result -> !result.isSuccessful() && "Phone is unavailable".equals(result.message()))
+        StepVerifier.create(bookPhoneCommandHandler.handle(bookPhoneCommand))
+                .expectNextMatches(result -> !result.isSuccessful() && PHONE_IS_ALREADY_BOOKED.equals(result.message()))
                 .verifyComplete();
 
         verify(phoneEventsStream, never()).add(any());
@@ -77,8 +81,8 @@ public class BookPhoneCommandHandlerTest {
 
         BookPhoneCommand bookPhoneCommand = buildBookPhoneCommand("User 2");
 
-        StepVerifier.create(bookPhoneCommandHandler.book(bookPhoneCommand))
-                .expectNextMatches(result -> !result.isSuccessful() && "Phone is unavailable".equals(result.message()))
+        StepVerifier.create(bookPhoneCommandHandler.handle(bookPhoneCommand))
+                .expectNextMatches(result -> !result.isSuccessful() && PHONE_HAS_JUST_BEEN_BOOKED.equals(result.message()))
                 .verifyComplete();
 
     }

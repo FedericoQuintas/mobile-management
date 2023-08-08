@@ -1,4 +1,4 @@
-package com.challenge.mobilemanagement.usecases;
+package com.challenge.mobilemanagement.usecases.bookPhone;
 
 import com.challenge.mobilemanagement.api.requests.BookPhoneRequest;
 import com.challenge.mobilemanagement.domain.PhoneId;

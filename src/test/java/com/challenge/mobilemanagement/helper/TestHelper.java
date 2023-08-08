@@ -1,8 +1,10 @@
 package com.challenge.mobilemanagement.helper;
 
 import com.challenge.mobilemanagement.api.requests.BookPhoneRequest;
+import com.challenge.mobilemanagement.api.requests.ReturnPhoneRequest;
 import com.challenge.mobilemanagement.domain.*;
-import com.challenge.mobilemanagement.usecases.BookPhoneCommand;
+import com.challenge.mobilemanagement.usecases.bookPhone.BookPhoneCommand;
+import com.challenge.mobilemanagement.usecases.returnPhone.ReturnPhoneCommand;
 
 public class TestHelper {
 
@@ -22,5 +24,9 @@ public class TestHelper {
 
     public static BookPhoneCommand buildBookPhoneCommand(String user){
         return BookPhoneCommand.fromRequest(new BookPhoneRequest(PHONE_ID, user));
+    }
+
+    public static ReturnPhoneCommand buildReturnPhoneCommand() {
+        return ReturnPhoneCommand.fromRequest(new ReturnPhoneRequest(PHONE_ID, USERNAME));
     }
 }
