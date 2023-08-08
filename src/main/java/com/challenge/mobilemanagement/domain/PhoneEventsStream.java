@@ -5,5 +5,5 @@ import reactor.core.publisher.Mono;
 public interface PhoneEventsStream {
     Mono<Void> add(PhoneEvent phoneEvent);
 
-    Mono<PhoneEvents> findById(PhoneId phoneId);
+    Mono<PhoneEvents> findById(PhoneModel phoneModel);
 }

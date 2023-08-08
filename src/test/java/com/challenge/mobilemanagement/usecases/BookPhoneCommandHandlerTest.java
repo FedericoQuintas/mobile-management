@@ -26,7 +26,7 @@ public class BookPhoneCommandHandlerTest {
     public void before() {
         phoneEventsStream = mock(PhoneEventsStream.class);
         bookPhoneCommandHandler = new BookPhoneCommandHandler(phoneEventsStream);
-        when(phoneEventsStream.findById(phoneId())).thenReturn(Mono.just(PhoneEvents.of(List.of())));
+        when(phoneEventsStream.findById(phoneModel())).thenReturn(Mono.just(PhoneEvents.of(List.of())));
         when(phoneEventsStream.add(any())).thenReturn(Mono.empty());
     }
 
@@ -47,7 +47,7 @@ public class BookPhoneCommandHandlerTest {
     public void whenBooksForSecondTimeThenAddsBookingEventWithVersionTwo() {
 
         PhoneEvent eventWithVersionTwo = TestPhoneEventBuilder.builder().with(Version.of(2)).build();
-        when(phoneEventsStream.findById(phoneId())).thenReturn(Mono.just(PhoneEvents.of(List.of(buildReturnedEvent()))));
+        when(phoneEventsStream.findById(phoneModel())).thenReturn(Mono.just(PhoneEvents.of(List.of(buildReturnedEvent()))));
 
         BookPhoneCommand bookPhoneCommand = buildBookPhoneCommand();
 
@@ -62,7 +62,7 @@ public class BookPhoneCommandHandlerTest {
     @Test
     public void whenBooksPhoneButIsAlreadyBookedThenItDoesNotAddBookingEvent() {
 
-        when(phoneEventsStream.findById(phoneId())).thenReturn(Mono.just(PhoneEvents.of(List.of(TestPhoneEventBuilder.builder().build()))));
+        when(phoneEventsStream.findById(phoneModel())).thenReturn(Mono.just(PhoneEvents.of(List.of(TestPhoneEventBuilder.builder().build()))));
 
         BookPhoneCommand bookPhoneCommand = buildBookPhoneCommand("User 2");
 

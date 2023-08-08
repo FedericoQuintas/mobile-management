@@ -3,7 +3,6 @@ package com.challenge.mobilemanagement.usecases;
 
 import com.challenge.mobilemanagement.domain.*;
 import com.challenge.mobilemanagement.helper.TestPhoneEventBuilder;
-import com.challenge.mobilemanagement.usecases.bookPhone.BookPhoneCommand;
 import com.challenge.mobilemanagement.usecases.returnPhone.ReturnPhoneCommand;
 import com.challenge.mobilemanagement.usecases.returnPhone.ReturnPhoneCommandHandler;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,7 +25,7 @@ public class ReturnPhoneCommandHandlerTest {
     public void before() {
         phoneEventsStream = mock(PhoneEventsStream.class);
         returnPhoneCommandHandler = new ReturnPhoneCommandHandler(phoneEventsStream);
-        when(phoneEventsStream.findById(phoneId())).thenReturn(Mono.just(PhoneEvents.of(List.of(TestPhoneEventBuilder.builder().build()))));
+        when(phoneEventsStream.findById(phoneModel())).thenReturn(Mono.just(PhoneEvents.of(List.of(TestPhoneEventBuilder.builder().build()))));
         when(phoneEventsStream.add(any())).thenReturn(Mono.empty());
     }
 
@@ -45,7 +44,7 @@ public class ReturnPhoneCommandHandlerTest {
     @Test
     public void returnsErrorWhenReturnsAPhoneThatWasNotBooked() {
 
-        when(phoneEventsStream.findById(phoneId())).thenReturn(Mono.just(PhoneEvents.of(List.of())));
+        when(phoneEventsStream.findById(phoneModel())).thenReturn(Mono.just(PhoneEvents.of(List.of())));
         ReturnPhoneCommand returnPhoneCommand = buildReturnPhoneCommand();
 
         StepVerifier.create(returnPhoneCommandHandler.handle(returnPhoneCommand))

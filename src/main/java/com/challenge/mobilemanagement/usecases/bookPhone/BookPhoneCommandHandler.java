@@ -16,10 +16,10 @@ public class BookPhoneCommandHandler {
 
     public Mono<Result> handle(BookPhoneCommand bookPhoneCommand) {
 
-        return fetchEventsById(bookPhoneCommand.phoneId())
+        return fetchEventsById(bookPhoneCommand.phoneModel())
                 .flatMap(events -> {
                     if (events.isBooked()) return Mono.just(Result.unavailable(PHONE_IS_ALREADY_BOOKED));
-                    PhoneEvent phoneEvent = PhoneEvent.of(bookPhoneCommand.phoneId(), bookPhoneCommand.username(), PhoneEventType.BOOKED, events.getNextVersion());
+                    PhoneEvent phoneEvent = PhoneEvent.of(bookPhoneCommand.phoneModel(), bookPhoneCommand.username(), PhoneEventType.BOOKED, events.getNextVersion());
                     return addEvent(phoneEvent);
                 }).onErrorReturn(Result.unavailable(PHONE_HAS_JUST_BEEN_BOOKED));
     }
@@ -28,7 +28,7 @@ public class BookPhoneCommandHandler {
         return phoneEventsStream.add(phoneEvent).then(Mono.just(Result.ok()));
     }
 
-    private Mono<PhoneEvents> fetchEventsById(PhoneId phoneId) {
-        return phoneEventsStream.findById(phoneId);
+    private Mono<PhoneEvents> fetchEventsById(PhoneModel phoneModel) {
+        return phoneEventsStream.findById(phoneModel);
     }
 }

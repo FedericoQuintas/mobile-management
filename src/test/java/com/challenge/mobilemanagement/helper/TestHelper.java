@@ -10,8 +10,8 @@ public class TestHelper {
 
     public static final String PHONE_ID = "Phone_x";
     public static final String USERNAME = "User1";
-    public static PhoneId phoneId() {
-        return PhoneId.of(PHONE_ID);
+    public static PhoneModel phoneModel() {
+        return PhoneModel.of(PHONE_ID);
     }
 
     public static Username username(){

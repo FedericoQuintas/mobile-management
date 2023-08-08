@@ -1,9 +1,9 @@
 package com.challenge.mobilemanagement.domain;
 
-public record PhoneEvent(PhoneId phoneId, Username username, PhoneEventType eventType, Version version) {
+public record PhoneEvent(PhoneModel phoneModel, Username username, PhoneEventType eventType, Version version) {
 
-    public static PhoneEvent of(PhoneId phoneId, Username username, PhoneEventType eventType, Version version) {
-        return new PhoneEvent(phoneId, username, eventType, version);
+    public static PhoneEvent of(PhoneModel phoneModel, Username username, PhoneEventType eventType, Version version) {
+        return new PhoneEvent(phoneModel, username, eventType, version);
     }
 
     public boolean isBookingEvent() {

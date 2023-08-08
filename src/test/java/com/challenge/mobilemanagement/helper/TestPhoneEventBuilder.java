@@ -2,12 +2,12 @@ package com.challenge.mobilemanagement.helper;
 
 import com.challenge.mobilemanagement.domain.*;
 
-import static com.challenge.mobilemanagement.helper.TestHelper.phoneId;
+import static com.challenge.mobilemanagement.helper.TestHelper.phoneModel;
 import static com.challenge.mobilemanagement.helper.TestHelper.username;
 
 public class TestPhoneEventBuilder {
 
-    private PhoneId phoneId = phoneId();
+    private PhoneModel phoneModel = phoneModel();
 
     private Username username = username();
 
@@ -20,7 +20,7 @@ public class TestPhoneEventBuilder {
     }
 
     public PhoneEvent build() {
-        return PhoneEvent.of(phoneId, username, eventType, version);
+        return PhoneEvent.of(phoneModel, username, eventType, version);
     }
 
     public TestPhoneEventBuilder with(Version version) {

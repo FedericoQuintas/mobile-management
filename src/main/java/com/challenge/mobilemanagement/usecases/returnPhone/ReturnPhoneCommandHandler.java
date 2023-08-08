@@ -13,10 +13,10 @@ public class ReturnPhoneCommandHandler {
 
     public Mono<Result> handle(ReturnPhoneCommand returnPhoneCommand) {
 
-        return fetchEventsById(returnPhoneCommand.phoneId())
+        return fetchEventsById(returnPhoneCommand.phoneModel())
                 .flatMap(events -> {
                     if (!events.isBooked()) return Mono.just(Result.unavailable(PHONE_WAS_NOT_BOOKED));
-                    PhoneEvent phoneEvent = PhoneEvent.of(returnPhoneCommand.phoneId(), returnPhoneCommand.username(), PhoneEventType.RETURNED, events.getNextVersion());
+                    PhoneEvent phoneEvent = PhoneEvent.of(returnPhoneCommand.phoneModel(), returnPhoneCommand.username(), PhoneEventType.RETURNED, events.getNextVersion());
                     return addEvent(phoneEvent);
                 }).onErrorReturn(Result.unavailable(PHONE_HAS_JUST_BEEN_RETURNED));
     }
@@ -25,7 +25,7 @@ public class ReturnPhoneCommandHandler {
         return phoneEventsStream.add(phoneEvent).then(Mono.just(Result.ok()));
     }
 
-    private Mono<PhoneEvents> fetchEventsById(PhoneId phoneId) {
-        return phoneEventsStream.findById(phoneId);
+    private Mono<PhoneEvents> fetchEventsById(PhoneModel phoneModel) {
+        return phoneEventsStream.findById(phoneModel);
     }
 }
