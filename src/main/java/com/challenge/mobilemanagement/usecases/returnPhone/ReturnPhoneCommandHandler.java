@@ -21,7 +21,6 @@ public class ReturnPhoneCommandHandler {
     }
 
     public Mono<Result> handle(ReturnPhoneCommand returnPhoneCommand) {
-
         return fetchEventsById(returnPhoneCommand.phoneModel())
                 .flatMap(events -> {
                     if (!events.isBooked()) return Mono.just(Result.unavailable(PHONE_WAS_NOT_BOOKED));

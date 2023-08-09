@@ -7,6 +7,6 @@ import com.challenge.mobilemanagement.domain.Username;
 public record BookPhoneCommand(PhoneModel phoneModel, Username username) {
 
     public static BookPhoneCommand fromRequest(BookPhoneRequest bookPhoneRequest) {
-        return new BookPhoneCommand(PhoneModel.of(bookPhoneRequest.model()), Username.of(bookPhoneRequest.user()));
+        return new BookPhoneCommand(PhoneModel.of(bookPhoneRequest.model()), Username.of(bookPhoneRequest.username()));
     }
 }
