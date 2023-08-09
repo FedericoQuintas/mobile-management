@@ -1,12 +1,14 @@
 package com.challenge.mobilemanagement.usecases.returnPhone;
 
 import com.challenge.mobilemanagement.domain.*;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.time.Clock;
 import java.time.Instant;
 import java.util.List;
 
+@Service
 public class ReturnPhoneCommandHandler {
     public static final String PHONE_WAS_NOT_BOOKED = "Phone was not booked";
     private Clock clock;
