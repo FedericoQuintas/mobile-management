@@ -7,6 +7,6 @@ import com.challenge.mobilemanagement.domain.Username;
 public record ReturnPhoneCommand(PhoneModel phoneModel, Username username)  {
 
     public static ReturnPhoneCommand fromRequest(ReturnPhoneRequest returnPhoneRequest) {
-        return new ReturnPhoneCommand(PhoneModel.of(returnPhoneRequest.phone()), Username.of(returnPhoneRequest.username()));
+        return new ReturnPhoneCommand(PhoneModel.of(returnPhoneRequest.model()), Username.of(returnPhoneRequest.username()));
     }
 }
