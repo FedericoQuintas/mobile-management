@@ -1,9 +1,6 @@
 package com.challenge.mobilemanagement.domain;
 
-import reactor.core.publisher.Mono;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 
-public interface PhoneEventsStream {
-    Mono<Void> add(PhoneEvent phoneEvent);
-
-    Mono<PhoneEvents> findById(PhoneModel phoneModel);
+public interface PhoneEventsStream extends ReactiveCrudRepository<PhoneEventPersistentModel, String> {
 }

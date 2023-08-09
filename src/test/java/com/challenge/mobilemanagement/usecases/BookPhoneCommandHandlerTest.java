@@ -7,6 +7,7 @@ import com.challenge.mobilemanagement.usecases.bookPhone.BookPhoneCommand;
 import com.challenge.mobilemanagement.usecases.bookPhone.BookPhoneCommandHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -25,9 +26,9 @@ public class BookPhoneCommandHandlerTest {
     @BeforeEach
     public void before() {
         phoneEventsStream = mock(PhoneEventsStream.class);
-        bookPhoneCommandHandler = new BookPhoneCommandHandler(phoneEventsStream);
-        when(phoneEventsStream.findById(phoneModel())).thenReturn(Mono.just(PhoneEvents.of(List.of())));
-        when(phoneEventsStream.add(any())).thenReturn(Mono.empty());
+        bookPhoneCommandHandler = new BookPhoneCommandHandler(phoneEventsStream, clock());
+        when(phoneEventsStream.findAllById(List.of(phoneModel().model()))).thenReturn(Flux.fromIterable((List.of())));
+        when(phoneEventsStream.save(any())).thenReturn(Mono.empty());
     }
 
     @Test
@@ -39,7 +40,7 @@ public class BookPhoneCommandHandlerTest {
                 .expectNextMatches(Result::isSuccessful)
                 .verifyComplete();
 
-        verify(phoneEventsStream).add(TestPhoneEventBuilder.builder().build());
+        verify(phoneEventsStream).save(TestPhoneEventBuilder.builder().build().asPersistentModel());
 
     }
 
@@ -47,7 +48,7 @@ public class BookPhoneCommandHandlerTest {
     public void whenBooksForSecondTimeThenAddsBookingEventWithVersionTwo() {
 
         PhoneEvent eventWithVersionTwo = TestPhoneEventBuilder.builder().with(Version.of(2)).build();
-        when(phoneEventsStream.findById(phoneModel())).thenReturn(Mono.just(PhoneEvents.of(List.of(buildReturnedEvent()))));
+        when(phoneEventsStream.findAllById(List.of(phoneModel().model()))).thenReturn(Flux.fromIterable(List.of(buildReturnedEvent().asPersistentModel())));
 
         BookPhoneCommand bookPhoneCommand = buildBookPhoneCommand();
 
@@ -55,14 +56,14 @@ public class BookPhoneCommandHandlerTest {
                 .expectNextMatches(Result::isSuccessful)
                 .verifyComplete();
 
-        verify(phoneEventsStream).add(eventWithVersionTwo);
+        verify(phoneEventsStream).save(eventWithVersionTwo.asPersistentModel());
 
     }
 
     @Test
     public void whenBooksPhoneButIsAlreadyBookedThenItDoesNotAddBookingEvent() {
 
-        when(phoneEventsStream.findById(phoneModel())).thenReturn(Mono.just(PhoneEvents.of(List.of(TestPhoneEventBuilder.builder().build()))));
+        when(phoneEventsStream.findAllById(List.of(phoneModel().model()))).thenReturn(Flux.fromIterable(List.of(TestPhoneEventBuilder.builder().build().asPersistentModel())));
 
         BookPhoneCommand bookPhoneCommand = buildBookPhoneCommand("User 2");
 
@@ -70,14 +71,14 @@ public class BookPhoneCommandHandlerTest {
                 .expectNextMatches(result -> !result.isSuccessful() && PHONE_IS_ALREADY_BOOKED.equals(result.message()))
                 .verifyComplete();
 
-        verify(phoneEventsStream, never()).add(any());
+        verify(phoneEventsStream, never()).save(any());
 
     }
 
     @Test
     public void whenSomeoneElseBookedConcurrentlyThenVersionConstraintIsTriggered() {
 
-        when(phoneEventsStream.add(any())).thenReturn(Mono.error(new DuplicateVersionException()));
+        when(phoneEventsStream.save(any())).thenReturn(Mono.error(new RuntimeException()));
 
         BookPhoneCommand bookPhoneCommand = buildBookPhoneCommand("User 2");
 

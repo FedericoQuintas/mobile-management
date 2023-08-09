@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.challenge'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.1'
 
 java {
 	sourceCompatibility = '17'
@@ -21,13 +21,22 @@ repositories {
 	mavenCentral()
 }
 
+ext {
+	set('testcontainersVersion', "1.18.0")
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
+	implementation 'org.postgresql:r2dbc-postgresql'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
+	implementation 'org.projectlombok:lombok:1.18.22'
+	annotationProcessor 'org.projectlombok:lombok:1.18.22'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'
+	testImplementation 'org.testcontainers:junit-jupiter'
+	testImplementation 'org.testcontainers:postgresql'
+	testImplementation 'org.testcontainers:r2dbc'
+
 }
 
 tasks.named('test') {

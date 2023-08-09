@@ -2,8 +2,8 @@ package com.challenge.mobilemanagement.helper;
 
 import com.challenge.mobilemanagement.domain.*;
 
-import static com.challenge.mobilemanagement.helper.TestHelper.phoneModel;
-import static com.challenge.mobilemanagement.helper.TestHelper.username;
+import static com.challenge.mobilemanagement.helper.TestHelper.*;
+import static java.time.Instant.now;
 
 public class TestPhoneEventBuilder {
 
@@ -20,7 +20,7 @@ public class TestPhoneEventBuilder {
     }
 
     public PhoneEvent build() {
-        return PhoneEvent.of(phoneModel, username, eventType, version);
+        return PhoneEvent.of(phoneModel, username, eventType, version, clock().instant());
     }
 
     public TestPhoneEventBuilder with(Version version) {
