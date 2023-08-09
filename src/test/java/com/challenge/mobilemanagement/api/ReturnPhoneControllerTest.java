@@ -1,10 +1,7 @@
 package com.challenge.mobilemanagement.api;
 
-import com.challenge.mobilemanagement.api.requests.BookPhoneRequest;
 import com.challenge.mobilemanagement.api.requests.ReturnPhoneRequest;
 import com.challenge.mobilemanagement.domain.Result;
-import com.challenge.mobilemanagement.usecases.bookPhone.BookPhoneCommand;
-import com.challenge.mobilemanagement.usecases.bookPhone.BookPhoneCommandHandler;
 import com.challenge.mobilemanagement.usecases.returnPhone.ReturnPhoneCommand;
 import com.challenge.mobilemanagement.usecases.returnPhone.ReturnPhoneCommandHandler;
 import org.junit.jupiter.api.Test;
@@ -16,7 +13,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
-import static com.challenge.mobilemanagement.helper.TestHelper.*;
+import static com.challenge.mobilemanagement.helper.TestHelper.buildReturnPhoneCommand;
+import static com.challenge.mobilemanagement.helper.TestHelper.buildReturnPhoneRequest;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

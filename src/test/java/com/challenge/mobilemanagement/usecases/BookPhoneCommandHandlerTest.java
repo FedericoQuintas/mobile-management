@@ -20,15 +20,19 @@ public class BookPhoneCommandHandlerTest {
 
     public static final String PHONE_IS_ALREADY_BOOKED = "Phone is already booked";
     public static final String PHONE_HAS_JUST_BEEN_BOOKED = "Phone has just been booked";
+    public static final String MODEL_DOES_NOT_EXIST = "Model does not exist";
     private PhoneEventsStream phoneEventsStream;
     private BookPhoneCommandHandler bookPhoneCommandHandler;
+    private PhoneRepository phoneRepository;
 
     @BeforeEach
     public void before() {
+        phoneRepository = mock(PhoneRepository.class);
         phoneEventsStream = mock(PhoneEventsStream.class);
-        bookPhoneCommandHandler = new BookPhoneCommandHandler(phoneEventsStream, clock());
+        bookPhoneCommandHandler = new BookPhoneCommandHandler(phoneEventsStream, clock(), phoneRepository);
         when(phoneEventsStream.findAllById(List.of(phoneModel().model()))).thenReturn(Flux.fromIterable((List.of())));
         when(phoneEventsStream.save(any())).thenReturn(Mono.empty());
+        when(phoneRepository.exists(any())).thenReturn(true);
     }
 
     @Test
@@ -86,6 +90,20 @@ public class BookPhoneCommandHandlerTest {
                 .expectNextMatches(result -> !result.isSuccessful() && PHONE_HAS_JUST_BEEN_BOOKED.equals(result.message()))
                 .verifyComplete();
 
+    }
+
+    @Test
+    public void whenBookDoesNotExistThenReturnsError() {
+
+        BookPhoneCommand bookPhoneCommand = buildBookPhoneCommand();
+
+        when(phoneRepository.exists(bookPhoneCommand.phoneModel())).thenReturn(false);
+
+        StepVerifier.create(bookPhoneCommandHandler.handle(bookPhoneCommand))
+                .expectNextMatches(result -> !result.isSuccessful() && MODEL_DOES_NOT_EXIST.equals(result.message()))
+                .verifyComplete();
+
+        verify(phoneEventsStream, never()).save(any());
     }
 
     private static PhoneEvent buildReturnedEvent() {

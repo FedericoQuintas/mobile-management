@@ -1,15 +1,21 @@
 package com.challenge.mobilemanagement.usecases.returnPhone;
 
 import com.challenge.mobilemanagement.domain.*;
+import com.challenge.mobilemanagement.usecases.bookPhone.BookPhoneCommandHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.time.Clock;
 import java.time.Instant;
 import java.util.List;
+import java.util.function.Consumer;
 
 @Service
 public class ReturnPhoneCommandHandler {
+
+    Logger logger = LoggerFactory.getLogger(BookPhoneCommandHandler.class);
     public static final String PHONE_WAS_NOT_BOOKED = "Phone was not booked";
     private Clock clock;
     private final PhoneEventsStream phoneEventsStream;
@@ -26,7 +32,13 @@ public class ReturnPhoneCommandHandler {
                     if (!events.isBooked()) return Mono.just(Result.unavailable(PHONE_WAS_NOT_BOOKED));
                     PhoneEvent phoneEvent = buildPhoneEvent(returnPhoneCommand, events);
                     return addEvent(phoneEvent);
-                }).onErrorReturn(Result.unavailable(PHONE_HAS_JUST_BEEN_RETURNED));
+                })
+                .doOnError(logError())
+                .onErrorReturn(Result.unavailable(PHONE_HAS_JUST_BEEN_RETURNED));
+    }
+
+    private Consumer<Throwable> logError() {
+        return error -> logger.error(error.getMessage());
     }
 
     private PhoneEvent buildPhoneEvent(ReturnPhoneCommand returnPhoneCommand, PhoneEvents events) {
