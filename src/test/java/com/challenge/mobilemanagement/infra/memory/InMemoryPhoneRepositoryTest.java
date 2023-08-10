@@ -13,8 +13,8 @@ public class InMemoryPhoneRepositoryTest {
     @Test
     public void respondsWhetherPhoneModelExists() {
         InMemoryPhoneRepository inMemoryPhoneRepository = new InMemoryPhoneRepository();
-        assertFalse(inMemoryPhoneRepository.exists(new PhoneModel("a")));
-        assertTrue(inMemoryPhoneRepository.exists(new PhoneModel("Apple iPhone 13")));
+        assertFalse(inMemoryPhoneRepository.exists(PhoneModel.of("a")));
+        assertTrue(inMemoryPhoneRepository.exists(PhoneModel.of("Apple iPhone 13")));
     }
 
     @Test

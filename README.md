@@ -41,7 +41,19 @@ the in-memory repository.
 understanding that a reasonable v2 of this service could consist in more than one device of each model; in that case, both use cases will diverge.
 That being said, I acknowledge that either way would correct with respective tradeoffs.
 4) I skip authentication/authorization, although it's a reasonable requirement for the application since the early stages.
+5) Regarding the following requirement:
 
+```
+The following information should also be available for each phone:
+- Availability (Yes / No)
+- When it was booked
+- Who booked the phone
+```
+
+
+I decided to take it in two different ways and implement two endpoints, which I found valuable:
+* _/phones/{model}/history_: Retrieves the event history related to that model, useful to trace what happened with a phone.
+* _/phones-status_: Retrieves the current status (snapshot from the event history) for each phone, useful to quickly know the overall situation.
 
 
 
