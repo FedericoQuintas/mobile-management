@@ -20,7 +20,7 @@ public class InMemoryPhoneRepositoryTest {
     @Test
     public void fetchAllRetrievesEveryPhoneModel() {
         InMemoryPhoneRepository inMemoryPhoneRepository = new InMemoryPhoneRepository();
-        StepVerifier.create(inMemoryPhoneRepository.fetchAll())
+        StepVerifier.create(inMemoryPhoneRepository.fetchModels())
                 .expectNextCount(9)
                 .verifyComplete();
     }

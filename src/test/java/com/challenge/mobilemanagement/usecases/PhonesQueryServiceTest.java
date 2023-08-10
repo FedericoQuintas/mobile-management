@@ -4,6 +4,8 @@ import com.challenge.mobilemanagement.domain.*;
 import com.challenge.mobilemanagement.domain.events.PhoneEvent;
 import com.challenge.mobilemanagement.domain.events.PhoneEventType;
 import com.challenge.mobilemanagement.domain.events.PhoneEventsStream;
+import com.challenge.mobilemanagement.domain.phone.Phone;
+import com.challenge.mobilemanagement.domain.phone.Technologies;
 import com.challenge.mobilemanagement.domain.status.Availability;
 import com.challenge.mobilemanagement.helper.TestPhoneEventBuilder;
 import com.challenge.mobilemanagement.usecases.query.PhonesQueryService;
@@ -39,7 +41,7 @@ public class PhonesQueryServiceTest {
     public void fetchCurrentStatusForEveryModel() {
         PhoneModel secondModel = PhoneModel.of(MODEL_2);
         PhoneModel thirdModel = PhoneModel.of(MODEL_3);
-        when(phoneRepository.fetchAll()).thenReturn(Flux.fromIterable(List.of(phoneModel(), secondModel, thirdModel)));
+        when(phoneRepository.fetchModels()).thenReturn(Flux.fromIterable(List.of(phoneModel(), secondModel, thirdModel)));
         when(phoneEventsStream.findAllById(List.of(phoneModel().model())))
                 .thenReturn(Flux.fromIterable(List.of(buildBookedEvent().asPersistentModel())));
         when(phoneEventsStream.findAllById(List.of(MODEL_2)))
@@ -71,13 +73,21 @@ public class PhonesQueryServiceTest {
         when(phoneEventsStream.findAllById(List.of(phoneModel().model())))
                 .thenReturn(Flux.fromStream(Stream.of(returnedEvent.asPersistentModel(), buildBookedEvent().asPersistentModel())));
 
-        phonesQueryService = new PhonesQueryService(phoneEventsStream, phoneRepository);
-
         StepVerifier.create(phonesQueryService.fetchHistory(phoneModel()))
                 .expectNextMatches(element -> element.equals(buildBookedEvent()))
                 .expectNextMatches(element -> element.equals(returnedEvent))
                 .verifyComplete();
+    }
 
+    @Test
+    public void fetchDetails() {
+
+        Phone phone = Phone.of(phoneModel(), Technologies.of(List.of("3G")));
+        when(phoneRepository.fetchPhonesDetails()).thenReturn(Flux.fromIterable(List.of(phone)));
+        StepVerifier.create(phonesQueryService.fetchPhonesDetails())
+                .expectNextMatches(element -> element.technologies().equals(phone.technologies())
+                        && element.model().equals(phone.model()))
+                .verifyComplete();
     }
 
 }

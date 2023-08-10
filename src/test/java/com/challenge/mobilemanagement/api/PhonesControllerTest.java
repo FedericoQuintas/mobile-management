@@ -2,8 +2,11 @@ package com.challenge.mobilemanagement.api;
 
 import com.challenge.mobilemanagement.api.responses.PhoneEventResponse;
 import com.challenge.mobilemanagement.api.responses.PhoneStatusResponse;
+import com.challenge.mobilemanagement.api.responses.PhonesResponse;
 import com.challenge.mobilemanagement.domain.*;
 import com.challenge.mobilemanagement.domain.events.PhoneEvent;
+import com.challenge.mobilemanagement.domain.phone.Phone;
+import com.challenge.mobilemanagement.domain.phone.Technologies;
 import com.challenge.mobilemanagement.domain.status.Availability;
 import com.challenge.mobilemanagement.domain.status.PhoneStatus;
 import com.challenge.mobilemanagement.usecases.query.PhonesQueryService;
@@ -17,6 +20,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import static com.challenge.mobilemanagement.helper.TestHelper.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -60,10 +64,24 @@ public class PhonesControllerTest {
                 ));
 
 
-        webClient.get().uri("/phones").exchange().expectStatus().isOk()
+        webClient.get().uri("/phones-status").exchange().expectStatus().isOk()
                 .expectBodyList(PhoneStatusResponse.class)
                 .hasSize(2)
                 .contains(PhoneStatusResponse.from(phoneStatusBooked), PhoneStatusResponse.from(phoneStatusAvailable));
+
+    }
+
+    @Test
+    public void returnsPhonesDetails() {
+
+        Phone phone = Phone.of(phoneModel(), Technologies.of(List.of("3G")));
+        when(phonesQueryService.fetchPhonesDetails()).thenReturn(Flux.fromIterable(List.of(phone)));
+
+
+        webClient.get().uri("/phones").exchange().expectStatus().isOk()
+                .expectBodyList(PhonesResponse.class)
+                .hasSize(1)
+                .contains(PhonesResponse.from(phone));
 
     }
 

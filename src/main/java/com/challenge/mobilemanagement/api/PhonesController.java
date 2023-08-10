@@ -2,6 +2,7 @@ package com.challenge.mobilemanagement.api;
 
 import com.challenge.mobilemanagement.api.responses.PhoneEventResponse;
 import com.challenge.mobilemanagement.api.responses.PhoneStatusResponse;
+import com.challenge.mobilemanagement.api.responses.PhonesResponse;
 import com.challenge.mobilemanagement.domain.PhoneModel;
 import com.challenge.mobilemanagement.usecases.query.PhonesQueryService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,8 +24,13 @@ public class PhonesController {
         return phonesQueryService.fetchHistory(PhoneModel.of(model)).map(PhoneEventResponse::from);
     }
 
-    @GetMapping("/phones")
+    @GetMapping("/phones-status")
     public Flux<PhoneStatusResponse> status() {
         return phonesQueryService.fetchAll().map(PhoneStatusResponse::from);
+    }
+
+    @GetMapping("/phones")
+    public Flux<PhonesResponse> details() {
+        return phonesQueryService.fetchPhonesDetails().map(PhonesResponse::from);
     }
 }
