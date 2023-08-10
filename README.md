@@ -37,7 +37,7 @@ In order to build and run this project, you need the following components:
 1) Fonoapi is down and I haven't found any feasible alternative with required data. Therefore I added hard-coded dummy data to
 the in-memory repository.
 2) I purposely let a user return a device booked by another one, in my experience it's a possible scenario at the office.
-3) ReturnCommandHandler_ and _BookCommandHandler_ are similar and I considered merging them. At the end I opted to leave them separated
+3) _ReturnCommandHandler_ and _BookCommandHandler_ are similar and I considered merging them. At the end I opted to leave them separated
 understanding that a reasonable v2 of this service could consist in more than one device of each model; in that case, both use cases will diverge.
 That being said, I acknowledge that either way would correct with respective tradeoffs.
 4) I skip authentication/authorization, although it's a reasonable requirement for the application since the early stages.
