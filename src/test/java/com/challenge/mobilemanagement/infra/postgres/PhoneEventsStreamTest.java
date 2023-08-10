@@ -1,8 +1,8 @@
 package com.challenge.mobilemanagement.infra.postgres;
 
-import com.challenge.mobilemanagement.domain.PhoneEvent;
-import com.challenge.mobilemanagement.domain.PhoneEventPersistentModel;
-import com.challenge.mobilemanagement.domain.PhoneEventsStream;
+import com.challenge.mobilemanagement.domain.events.PhoneEvent;
+import com.challenge.mobilemanagement.domain.events.PhoneEventPersistentModel;
+import com.challenge.mobilemanagement.domain.events.PhoneEventsStream;
 import com.challenge.mobilemanagement.helper.TestPhoneEventBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

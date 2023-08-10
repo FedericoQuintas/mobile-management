@@ -1,12 +1,14 @@
-package com.challenge.mobilemanagement.usecases;
+package com.challenge.mobilemanagement.usecases.query;
 
 import com.challenge.mobilemanagement.domain.*;
+import com.challenge.mobilemanagement.domain.events.PhoneEvent;
+import com.challenge.mobilemanagement.domain.events.PhoneEvents;
+import com.challenge.mobilemanagement.domain.events.PhoneEventsStream;
+import com.challenge.mobilemanagement.domain.status.PhoneStatus;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class PhonesQueryService {

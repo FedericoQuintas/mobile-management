@@ -1,6 +1,10 @@
 package com.challenge.mobilemanagement.usecases.returnPhone;
 
 import com.challenge.mobilemanagement.domain.*;
+import com.challenge.mobilemanagement.domain.events.PhoneEvent;
+import com.challenge.mobilemanagement.domain.events.PhoneEventType;
+import com.challenge.mobilemanagement.domain.events.PhoneEvents;
+import com.challenge.mobilemanagement.domain.events.PhoneEventsStream;
 import com.challenge.mobilemanagement.usecases.bookPhone.BookPhoneCommandHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

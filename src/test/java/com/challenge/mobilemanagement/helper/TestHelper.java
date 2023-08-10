@@ -2,8 +2,8 @@ package com.challenge.mobilemanagement.helper;
 
 import com.challenge.mobilemanagement.api.requests.BookPhoneRequest;
 import com.challenge.mobilemanagement.api.requests.ReturnPhoneRequest;
-import com.challenge.mobilemanagement.domain.PhoneEvent;
-import com.challenge.mobilemanagement.domain.PhoneEventType;
+import com.challenge.mobilemanagement.domain.events.PhoneEvent;
+import com.challenge.mobilemanagement.domain.events.PhoneEventType;
 import com.challenge.mobilemanagement.domain.PhoneModel;
 import com.challenge.mobilemanagement.domain.Username;
 import com.challenge.mobilemanagement.usecases.bookPhone.BookPhoneCommand;

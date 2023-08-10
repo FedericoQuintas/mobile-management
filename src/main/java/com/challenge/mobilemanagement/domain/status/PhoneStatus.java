@@ -1,4 +1,7 @@
-package com.challenge.mobilemanagement.domain;
+package com.challenge.mobilemanagement.domain.status;
+
+import com.challenge.mobilemanagement.domain.PhoneModel;
+import com.challenge.mobilemanagement.domain.Username;
 
 import java.time.Instant;
 import java.util.Optional;

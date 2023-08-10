@@ -1,4 +1,4 @@
-package com.challenge.mobilemanagement.domain;
+package com.challenge.mobilemanagement.domain.events;
 
 public enum PhoneEventType {
      BOOKED, RETURNED;

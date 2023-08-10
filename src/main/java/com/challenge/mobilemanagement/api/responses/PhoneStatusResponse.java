@@ -1,6 +1,6 @@
 package com.challenge.mobilemanagement.api.responses;
 
-import com.challenge.mobilemanagement.domain.PhoneStatus;
+import com.challenge.mobilemanagement.domain.status.PhoneStatus;
 import com.challenge.mobilemanagement.domain.Username;
 
 import java.time.Instant;

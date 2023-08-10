@@ -1,4 +1,4 @@
-package com.challenge.mobilemanagement.domain;
+package com.challenge.mobilemanagement.domain.events;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

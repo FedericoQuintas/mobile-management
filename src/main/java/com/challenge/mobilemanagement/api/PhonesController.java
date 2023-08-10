@@ -3,7 +3,7 @@ package com.challenge.mobilemanagement.api;
 import com.challenge.mobilemanagement.api.responses.PhoneEventResponse;
 import com.challenge.mobilemanagement.api.responses.PhoneStatusResponse;
 import com.challenge.mobilemanagement.domain.PhoneModel;
-import com.challenge.mobilemanagement.usecases.PhonesQueryService;
+import com.challenge.mobilemanagement.usecases.query.PhonesQueryService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;

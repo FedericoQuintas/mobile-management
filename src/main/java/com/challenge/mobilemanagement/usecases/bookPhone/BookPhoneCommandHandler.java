@@ -1,6 +1,10 @@
 package com.challenge.mobilemanagement.usecases.bookPhone;
 
 import com.challenge.mobilemanagement.domain.*;
+import com.challenge.mobilemanagement.domain.events.PhoneEvent;
+import com.challenge.mobilemanagement.domain.events.PhoneEventType;
+import com.challenge.mobilemanagement.domain.events.PhoneEvents;
+import com.challenge.mobilemanagement.domain.events.PhoneEventsStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

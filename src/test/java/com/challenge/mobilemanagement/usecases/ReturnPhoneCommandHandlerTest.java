@@ -2,6 +2,8 @@ package com.challenge.mobilemanagement.usecases;
 
 
 import com.challenge.mobilemanagement.domain.*;
+import com.challenge.mobilemanagement.domain.events.PhoneEventType;
+import com.challenge.mobilemanagement.domain.events.PhoneEventsStream;
 import com.challenge.mobilemanagement.helper.TestPhoneEventBuilder;
 import com.challenge.mobilemanagement.usecases.returnPhone.ReturnPhoneCommand;
 import com.challenge.mobilemanagement.usecases.returnPhone.ReturnPhoneCommandHandler;
@@ -11,9 +13,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.time.Clock;
-import java.time.Instant;
-import java.time.ZoneOffset;
 import java.util.List;
 
 import static com.challenge.mobilemanagement.helper.TestHelper.*;

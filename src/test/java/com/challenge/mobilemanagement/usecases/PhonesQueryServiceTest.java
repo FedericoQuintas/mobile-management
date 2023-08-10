@@ -1,7 +1,12 @@
 package com.challenge.mobilemanagement.usecases;
 
 import com.challenge.mobilemanagement.domain.*;
+import com.challenge.mobilemanagement.domain.events.PhoneEvent;
+import com.challenge.mobilemanagement.domain.events.PhoneEventType;
+import com.challenge.mobilemanagement.domain.events.PhoneEventsStream;
+import com.challenge.mobilemanagement.domain.status.Availability;
 import com.challenge.mobilemanagement.helper.TestPhoneEventBuilder;
+import com.challenge.mobilemanagement.usecases.query.PhonesQueryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;

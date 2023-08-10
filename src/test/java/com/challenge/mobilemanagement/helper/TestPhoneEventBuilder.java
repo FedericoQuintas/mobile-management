@@ -1,6 +1,8 @@
 package com.challenge.mobilemanagement.helper;
 
 import com.challenge.mobilemanagement.domain.*;
+import com.challenge.mobilemanagement.domain.events.PhoneEvent;
+import com.challenge.mobilemanagement.domain.events.PhoneEventType;
 
 import static com.challenge.mobilemanagement.helper.TestHelper.*;
 import static java.time.Instant.now;

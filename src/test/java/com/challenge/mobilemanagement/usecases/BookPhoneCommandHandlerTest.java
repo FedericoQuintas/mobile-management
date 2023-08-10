@@ -2,6 +2,8 @@ package com.challenge.mobilemanagement.usecases;
 
 
 import com.challenge.mobilemanagement.domain.*;
+import com.challenge.mobilemanagement.domain.events.PhoneEvent;
+import com.challenge.mobilemanagement.domain.events.PhoneEventsStream;
 import com.challenge.mobilemanagement.helper.TestPhoneEventBuilder;
 import com.challenge.mobilemanagement.usecases.bookPhone.BookPhoneCommand;
 import com.challenge.mobilemanagement.usecases.bookPhone.BookPhoneCommandHandler;

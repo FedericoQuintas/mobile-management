@@ -1,4 +1,8 @@
-package com.challenge.mobilemanagement.domain;
+package com.challenge.mobilemanagement.domain.events;
+
+import com.challenge.mobilemanagement.domain.PhoneModel;
+import com.challenge.mobilemanagement.domain.Username;
+import com.challenge.mobilemanagement.domain.Version;
 
 import java.time.Instant;
 
