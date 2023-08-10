@@ -26,7 +26,7 @@ public class BookPhoneController {
     }
 
     @PostMapping("/book")
-    public Mono<ResponseEntity<ResultResponse>> create(@RequestBody BookPhoneRequest bookPhoneRequest) {
+    public Mono<ResponseEntity<ResultResponse>> book(@RequestBody BookPhoneRequest bookPhoneRequest) {
 
         return bookPhoneCommandHandler.handle(BookPhoneCommand.fromRequest(bookPhoneRequest))
                 .flatMap(BookPhoneController::buildResponse)

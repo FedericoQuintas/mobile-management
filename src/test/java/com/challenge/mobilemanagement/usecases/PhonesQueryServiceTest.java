@@ -8,6 +8,7 @@ import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import static com.challenge.mobilemanagement.helper.TestHelper.*;
@@ -16,6 +17,8 @@ import static org.mockito.Mockito.when;
 
 public class PhonesQueryServiceTest {
 
+    public static final String MODEL_2 = "model2";
+    public static final String MODEL_3 = "model3";
     private PhoneEventsStream phoneEventsStream;
     private PhoneRepository phoneRepository;
     private PhonesQueryService phonesQueryService;
@@ -27,14 +30,31 @@ public class PhonesQueryServiceTest {
         phonesQueryService = new PhonesQueryService(phoneEventsStream, phoneRepository);
     }
 
-    //    @Test
-    public void fetchCurrentStatusForAll() {
+    @Test
+    public void fetchCurrentStatusForEveryModel() {
+        PhoneModel secondModel = PhoneModel.of(MODEL_2);
+        PhoneModel thirdModel = PhoneModel.of(MODEL_3);
+        when(phoneRepository.fetchAll()).thenReturn(Flux.fromIterable(List.of(phoneModel(), secondModel, thirdModel)));
+        when(phoneEventsStream.findAllById(List.of(phoneModel().model())))
+                .thenReturn(Flux.fromIterable(List.of(buildBookedEvent().asPersistentModel())));
+        when(phoneEventsStream.findAllById(List.of(MODEL_2)))
+                .thenReturn(Flux.fromIterable(List.of(buildBookedEvent().asPersistentModel(), buildReturnedEvent().asPersistentModel())));
+        when(phoneEventsStream.findAllById(List.of(MODEL_3)))
+                .thenReturn(Flux.fromIterable(List.of()));
 
         StepVerifier.create(phonesQueryService.fetchAll())
                 .expectNextMatches(element -> element.model().equals(phoneModel()) &&
+                        element.availability().equals(Availability.BOOKED) &&
+                        element.holder().equals(Optional.of(username())) &&
+                        element.bookedTime().equals(Optional.of(clock().instant())))
+                .expectNextMatches(element -> element.model().equals(secondModel) &&
                         element.availability().equals(Availability.AVAILABLE) &&
-                        element.holder().equals(Username.EMPTY) &&
-                        element.bookedTime().equals(clock().instant()))
+                        element.holder().equals(Optional.empty()) &&
+                        element.bookedTime().equals(Optional.empty()))
+                .expectNextMatches(element -> element.model().equals(thirdModel) &&
+                        element.availability().equals(Availability.AVAILABLE) &&
+                        element.holder().equals(Optional.empty()) &&
+                        element.bookedTime().equals(Optional.empty()))
                 .verifyComplete();
 
     }

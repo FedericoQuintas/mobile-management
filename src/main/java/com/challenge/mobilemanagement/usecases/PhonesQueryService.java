@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class PhonesQueryService {
@@ -17,7 +19,11 @@ public class PhonesQueryService {
     }
 
     public Flux<PhoneStatus> fetchAll() {
-        return null;
+        return phoneRepository.fetchAll()
+                .flatMap(model -> phoneEventsStream.findAllById(List.of(model.model())).map(PhoneEvent::from)
+                        .collectList()
+                        .map(entry -> PhoneEvents.of(entry, model).currentStatus()));
+
     }
 
     public Flux<PhoneEvent> fetchHistory(PhoneModel phoneModel) {

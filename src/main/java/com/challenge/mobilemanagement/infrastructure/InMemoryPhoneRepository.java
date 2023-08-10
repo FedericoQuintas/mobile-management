@@ -3,6 +3,7 @@ package com.challenge.mobilemanagement.infrastructure;
 import com.challenge.mobilemanagement.domain.PhoneModel;
 import com.challenge.mobilemanagement.domain.PhoneRepository;
 import org.springframework.stereotype.Repository;
+import reactor.core.publisher.Flux;
 
 import java.util.Set;
 
@@ -22,5 +23,10 @@ public class InMemoryPhoneRepository implements PhoneRepository {
     @Override
     public Boolean exists(PhoneModel model) {
         return models.contains(model.model());
+    }
+
+    @Override
+    public Flux<PhoneModel> fetchAll() {
+        return Flux.fromIterable(models).map(PhoneModel::of);
     }
 }

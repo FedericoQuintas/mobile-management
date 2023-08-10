@@ -1,7 +1,8 @@
 package com.challenge.mobilemanagement.api;
 
 import com.challenge.mobilemanagement.api.responses.PhoneEventResponse;
-import com.challenge.mobilemanagement.domain.PhoneEvent;
+import com.challenge.mobilemanagement.api.responses.PhoneStatusResponse;
+import com.challenge.mobilemanagement.domain.*;
 import com.challenge.mobilemanagement.usecases.PhonesQueryService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-public class FetchPhoneHistoryControllerTest {
+public class PhonesControllerTest {
 
     @MockBean
     PhonesQueryService phonesQueryService;
@@ -30,21 +31,36 @@ public class FetchPhoneHistoryControllerTest {
     WebTestClient webClient;
 
     @Test
-    public void returns200WhenReturnsSuccessfully() {
+    public void returnsPhoneEventsHistory() {
 
         PhoneEvent bookedEvent = buildBookedEvent();
         PhoneEvent returnedEvent = buildReturnedEvent();
-        when(phonesQueryService.fetchHistory(any())).thenReturn(Flux.fromIterable(List.of(bookedEvent,
-                returnedEvent)));
+        when(phonesQueryService.fetchHistory(any())).thenReturn(Flux.fromIterable(List.of(bookedEvent, returnedEvent)));
 
 
-        webClient
-                .get().uri("/phones/" + phoneModel().model() + "/history")
-                .exchange()
+        webClient.get().uri("/phones/" + phoneModel().model() + "/history").exchange()
                 .expectStatus().isOk()
                 .expectBodyList(PhoneEventResponse.class)
                 .hasSize(2)
                 .contains(PhoneEventResponse.from(bookedEvent), PhoneEventResponse.from(returnedEvent));
+
+    }
+
+    @Test
+    public void returnsCurrentStatusForEachPhone() {
+        PhoneStatus phoneStatusBooked = PhoneStatus.of(phoneModel(), Availability.BOOKED, username(), clock().instant());
+        PhoneStatus phoneStatusAvailable = PhoneStatus.of(PhoneModel.of("Model2"), Availability.AVAILABLE);
+        when(phonesQueryService.fetchAll())
+                .thenReturn(Flux.fromIterable(List.of(
+                        phoneStatusBooked,
+                        phoneStatusAvailable)
+                ));
+
+
+        webClient.get().uri("/phones").exchange().expectStatus().isOk()
+                .expectBodyList(PhoneStatusResponse.class)
+                .hasSize(2)
+                .contains(PhoneStatusResponse.from(phoneStatusBooked), PhoneStatusResponse.from(phoneStatusAvailable));
 
     }
 

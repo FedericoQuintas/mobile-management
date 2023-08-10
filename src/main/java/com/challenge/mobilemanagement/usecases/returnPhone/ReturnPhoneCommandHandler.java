@@ -51,6 +51,7 @@ public class ReturnPhoneCommandHandler {
     }
 
     private Mono<PhoneEvents> fetchEventsById(PhoneModel phoneModel) {
-        return phoneEventsStream.findAllById(List.of(phoneModel.model())).map(PhoneEvent::from).collectList().map(PhoneEvents::of);
+        return phoneEventsStream.findAllById(List.of(phoneModel.model())).map(PhoneEvent::from).collectList()
+                .map(phoneEvents -> PhoneEvents.of(phoneEvents, phoneModel));
     }
 }

@@ -1,27 +1,30 @@
 package com.challenge.mobilemanagement.api;
 
-import com.challenge.mobilemanagement.api.requests.ReturnPhoneRequest;
 import com.challenge.mobilemanagement.api.responses.PhoneEventResponse;
-import com.challenge.mobilemanagement.api.responses.ResultResponse;
+import com.challenge.mobilemanagement.api.responses.PhoneStatusResponse;
 import com.challenge.mobilemanagement.domain.PhoneModel;
 import com.challenge.mobilemanagement.usecases.PhonesQueryService;
-import com.challenge.mobilemanagement.usecases.returnPhone.ReturnPhoneCommand;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 @RestController
-public class FetchPhoneHistoryController {
+public class PhonesController {
 
     private final PhonesQueryService phonesQueryService;
 
-    public FetchPhoneHistoryController(PhonesQueryService phonesQueryService) {
+    public PhonesController(PhonesQueryService phonesQueryService) {
         this.phonesQueryService = phonesQueryService;
     }
 
     @GetMapping("/phones/{model}/history")
     public Flux<PhoneEventResponse> history(@PathVariable String model) {
         return phonesQueryService.fetchHistory(PhoneModel.of(model)).map(PhoneEventResponse::from);
+    }
+
+    @GetMapping("/phones")
+    public Flux<PhoneStatusResponse> status() {
+        return phonesQueryService.fetchAll().map(PhoneStatusResponse::from);
     }
 }
