@@ -2,6 +2,8 @@ package com.challenge.mobilemanagement.helper;
 
 import com.challenge.mobilemanagement.api.requests.BookPhoneRequest;
 import com.challenge.mobilemanagement.api.requests.ReturnPhoneRequest;
+import com.challenge.mobilemanagement.domain.PhoneEvent;
+import com.challenge.mobilemanagement.domain.PhoneEventType;
 import com.challenge.mobilemanagement.domain.PhoneModel;
 import com.challenge.mobilemanagement.domain.Username;
 import com.challenge.mobilemanagement.usecases.bookPhone.BookPhoneCommand;
@@ -46,5 +48,13 @@ public class TestHelper {
 
     public static ReturnPhoneRequest buildReturnPhoneRequest() {
         return new ReturnPhoneRequest(PHONE_ID, USERNAME);
+    }
+
+    public static PhoneEvent buildReturnedEvent() {
+        return TestPhoneEventBuilder.builder().with(PhoneEventType.RETURNED).build();
+    }
+
+    public static PhoneEvent buildBookedEvent() {
+        return TestPhoneEventBuilder.builder().build();
     }
 }

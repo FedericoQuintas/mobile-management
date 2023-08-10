@@ -106,7 +106,4 @@ public class BookPhoneCommandHandlerTest {
         verify(phoneEventsStream, never()).save(any());
     }
 
-    private static PhoneEvent buildReturnedEvent() {
-        return TestPhoneEventBuilder.builder().with(PhoneEventType.RETURNED).build();
-    }
 }
