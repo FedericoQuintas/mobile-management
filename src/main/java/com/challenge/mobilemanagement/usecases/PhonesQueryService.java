@@ -21,6 +21,6 @@ public class PhonesQueryService {
     }
 
     public Flux<PhoneEvent> fetchHistory(PhoneModel phoneModel) {
-        return phoneEventsStream.findAllById(List.of(phoneModel.model())).map(PhoneEvent::from);
+        return phoneEventsStream.findAllById(List.of(phoneModel.model())).map(PhoneEvent::from).sort();
     }
 }

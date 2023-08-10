@@ -1,9 +1,7 @@
 package com.challenge.mobilemanagement.usecases;
 
-import com.challenge.mobilemanagement.domain.Availability;
-import com.challenge.mobilemanagement.domain.PhoneEventsStream;
-import com.challenge.mobilemanagement.domain.PhoneRepository;
-import com.challenge.mobilemanagement.domain.Username;
+import com.challenge.mobilemanagement.domain.*;
+import com.challenge.mobilemanagement.helper.TestPhoneEventBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
@@ -44,14 +42,15 @@ public class PhonesQueryServiceTest {
     @Test
     public void fetchPhoneHistory() {
 
+        PhoneEvent returnedEvent = TestPhoneEventBuilder.builder().with(PhoneEventType.RETURNED).with(Version.of(2)).build();
         when(phoneEventsStream.findAllById(List.of(phoneModel().model())))
-                .thenReturn(Flux.fromStream(Stream.of(buildBookedEvent().asPersistentModel(), buildReturnedEvent().asPersistentModel())));
+                .thenReturn(Flux.fromStream(Stream.of(returnedEvent.asPersistentModel(), buildBookedEvent().asPersistentModel())));
 
         phonesQueryService = new PhonesQueryService(phoneEventsStream, phoneRepository);
 
         StepVerifier.create(phonesQueryService.fetchHistory(phoneModel()))
                 .expectNextMatches(element -> element.equals(buildBookedEvent()))
-                .expectNextMatches(element -> element.equals(buildReturnedEvent()))
+                .expectNextMatches(element -> element.equals(returnedEvent))
                 .verifyComplete();
 
     }

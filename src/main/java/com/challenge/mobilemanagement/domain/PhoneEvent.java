@@ -2,7 +2,8 @@ package com.challenge.mobilemanagement.domain;
 
 import java.time.Instant;
 
-public record PhoneEvent(PhoneModel phoneModel, Username username, PhoneEventType eventType, Version version, Instant timestamp) {
+public record PhoneEvent(PhoneModel phoneModel, Username username, PhoneEventType eventType, Version version,
+                         Instant timestamp) implements Comparable<PhoneEvent> {
 
     public static PhoneEvent of(PhoneModel phoneModel, Username username, PhoneEventType eventType, Version version, Instant timestamp) {
         return new PhoneEvent(phoneModel, username, eventType, version, timestamp);
@@ -20,5 +21,10 @@ public record PhoneEvent(PhoneModel phoneModel, Username username, PhoneEventTyp
 
     public PhoneEventPersistentModel asPersistentModel() {
         return new PhoneEventPersistentModel(phoneModel.model(), username.value(), eventType.name(), version.version(), timestamp);
+    }
+
+    @Override
+    public int compareTo(PhoneEvent otherPhoneEvent) {
+        return version.compareTo(otherPhoneEvent.version());
     }
 }
