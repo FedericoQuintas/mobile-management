@@ -29,7 +29,7 @@ In order to build and run this project, you need the following components:
 - Docker
 
 ## Running the service
-1) ./gradlew build
+1) ./gradlew build _(depending on the environment can take several seconds)_
 2) docker-compose up
 3) It's possible to interact with the API via Swagger: http://localhost:8080/webjars/swagger-ui/index.html
 
